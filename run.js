@@ -24,8 +24,9 @@ const csvProcessor = async () => {
       for (const row of data) {
         try {
           logger.info(`Migrating ${row[0]} (${scriptName} | ${randomFile})`);
-          await migrateGuestEmail(row[2]);
+          await migrateGuestEmail(row[2].trim());
         } catch (error) {
+          console.log(error.message);
           logger.error(`Error with file: ${randomFile}- CustomerId: ${row[0]} - Response data: ${error.message}`);
           fileError = true;
           break;
