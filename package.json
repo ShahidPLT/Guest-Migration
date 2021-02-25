@@ -1,0 +1,21 @@
+{
+  "name": "csv-reader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "csv-split-stream": "^1.0.2",
+    "dotenv": "^8.2.0",
+    "event-stream": "^4.0.1",
+    "fast-csv": "^4.3.6",
+    "fast-glob": "^3.2.5",
+    "winston": "^3.3.3"
+  }
+}

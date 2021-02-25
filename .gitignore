@@ -1,0 +1,6 @@
+.env
+node_modules
+.prettierrc
+emails/*
+errored/*
+processed/*
