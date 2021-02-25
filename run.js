@@ -4,6 +4,8 @@ const axios = require('axios');
 const glob = require('fast-glob');
 require('dotenv').config();
 const logger = require('./logger/logger');
+const path = require('path');
+var scriptName = path.basename(__filename);
 
 let files;
 const csvProcessor = async () => {
@@ -21,7 +23,7 @@ const csvProcessor = async () => {
       let fileError = false;
       for (const row of data) {
         try {
-          logger.info(`Migrating ${row[0]} (${randomFile})`);
+          logger.info(`Migrating ${row[0]} (${scriptName} | ${randomFile})`);
           await migrateGuestEmail(row[2]);
         } catch (error) {
           logger.error(`Error with file: ${randomFile}- CustomerId: ${row[0]} - Response data: ${error.message}`);
