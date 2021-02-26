@@ -62,7 +62,7 @@ const migrateGuestEmail = async (Email) => {
     data: { Email },
     raxConfig: { 
       retry: 2,
-      statusCodesToRetry: [[503, 503]],
+      statusCodesToRetry: [[504, 504]],
       onRetryAttempt: err => {
         const cfg = rax.getConfig(err);
         console.log(`Retry attempt #${cfg.currentRetryAttempt}`);
