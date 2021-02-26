@@ -1,5 +1,6 @@
 const fs = require('fs');
 const csv = require('fast-csv');
+const rax = require('retry-axios');
 const axios = require('axios');
 const glob = require('fast-glob');
 require('dotenv').config();
@@ -52,11 +53,21 @@ async function getFileContents(filepath) {
 }
 
 const migrateGuestEmail = async (Email) => {
+  const interceptorId = rax.attach();
+
   return await axios({
     method: 'post',
     headers: { 'x-api-key': process.env.CCS_API_KEY },
     url: process.env.CCS_CHECK_EMAIL_URL,
     data: { Email },
+    raxConfig: { 
+      retry: 2,
+      statusCodesToRetry: [[503, 503]],
+      onRetryAttempt: err => {
+        const cfg = rax.getConfig(err);
+        console.log(`Retry attempt #${cfg.currentRetryAttempt}`);
+      }
+    }
   });
 };
 
