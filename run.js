@@ -9,6 +9,7 @@ const path = require('path');
 var scriptName = path.basename(__filename);
 
 let files;
+const interceptorId = rax.attach();
 const csvProcessor = async () => {
   do {
     files = await glob(['./emails/*.csv'], { dot: true });
@@ -20,12 +21,14 @@ const csvProcessor = async () => {
     const randomFile = files[Math.floor(Math.random() * files.length)]; //pick random from files
 
     if (fs.existsSync(`${randomFile}`)) {
+      logger.info(`Processing ${randomFile})`);
       let data = await getFileContents(randomFile);
       let fileError = false;
       for (const row of data) {
         try {
-          logger.info(`Migrating ${row[0]} (${scriptName} | ${randomFile})`);
+          //logger.info(`Migrating ${row[0]} (${scriptName} | ${randomFile})`);
           await migrateGuestEmail(row[2].trim());
+          console.log(`Migrated ${row[0]} (${scriptName} | ${randomFile})`);
         } catch (error) {
           console.log(error.message);
           logger.error(`Error with file: ${randomFile}- CustomerId: ${row[0]} - Response data: ${error.message}`);
@@ -53,8 +56,6 @@ async function getFileContents(filepath) {
 }
 
 const migrateGuestEmail = async (Email) => {
-  const interceptorId = rax.attach();
-
   return await axios({
     method: 'post',
     headers: { 'x-api-key': process.env.CCS_API_KEY },
